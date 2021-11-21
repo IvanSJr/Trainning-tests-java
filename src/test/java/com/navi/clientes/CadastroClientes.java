@@ -1,29 +1,32 @@
-package com.navi;
+package com.navi.clientes;
 
 import com.navi.clientes.CadastrarCliente;
 import com.navi.clientes.Cliente;
 import com.navi.clientes.exceptions.ClienteSemNomeException;
 import com.navi.clientes.exceptions.RemoverClienteQueNaoExisteException;
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 public class CadastroClientes {
 
     CadastrarCliente cadastro;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         cadastro = new CadastrarCliente();
     }
 
     @Test
+    @DisplayName("Criando o cadastro de clientes.")
     public void cadastrarCliente() {
         // Verifição
         Assertions.assertThat(cadastro.getClientes()).isEmpty();
     }
 
     @Test
+    @DisplayName("Adicionando um cliente de clientes.")
     public void adicionarCliente() {
         // Cenário
         Cliente cliente = new Cliente();
@@ -37,16 +40,20 @@ public class CadastroClientes {
                 .contains(cliente);
     }
 
-    @Test(expected = ClienteSemNomeException.class)
+    @Test()
+    @DisplayName("Não deve adicionar um cliente sem nome.")
     public void naoDeveAdicionarClienteSemNome() {
         // Cenário
         Cliente cliente = new Cliente();
 
         // Execução
-        cadastro.adicionarCliente(cliente);
+        ;
+        org.junit.jupiter.api.Assertions
+                .assertThrows(ClienteSemNomeException.class, () -> cadastro.adicionarCliente(cliente));
     }
 
     @Test
+    @DisplayName("Removendo um cliente.")
     public void removerCliente() {
         // Cenário
         Cliente cliente = new Cliente();
@@ -60,14 +67,16 @@ public class CadastroClientes {
         Assertions.assertThat(cadastro.getClientes()).isEmpty();
     }
 
-    @Test(expected = RemoverClienteQueNaoExisteException.class)
+    @Test()
+    @DisplayName("Removendo um cliente que não existe.")
     public void removerClienteQueNaoExiste() {
         // Cenário
         Cliente cliente = new Cliente();
         cliente.setNome("Teste");
 
         // Execução
-        cadastro.removerCliente(cliente);
+        org.junit.jupiter.api.Assertions
+                .assertThrows(RemoverClienteQueNaoExisteException.class, ()-> cadastro.removerCliente(cliente));
     }
 
 }
